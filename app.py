@@ -8,6 +8,10 @@ if __name__ == "__main__":
 	args=parser.parse_args()
 
 	if os.path.isfile(args.inploc):
-		FileType.identify(args.inploc)
+		ftype=FileType.identify(args.inploc)
+		if ftype == 'PNG':
+			print("PNG")
+		elif ftype == 'JPEG':
+			print('JPEG')
 	else:
 		print("WARNING! File Does Not Exist!")
