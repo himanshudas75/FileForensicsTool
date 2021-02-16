@@ -12,13 +12,13 @@ if __name__ == "__main__":
 		ftype=FileType.identify(location)
 		
 		if ftype == 'PNG':
-			import png
+			import filetypes.png
 			print("PNG\n")
-			png.pngfile(location)
+			filetypes.png.pngfile(location)
 
 		elif ftype == 'JPEG':
-			import jpeg
+			import filetypes.jpeg
 			print('JPEG')
-			jpeg.jpegfile(location)
+			filetypes.jpeg.jpegfile(location)
 	else:
 		print("WARNING! File Does Not Exist!")
