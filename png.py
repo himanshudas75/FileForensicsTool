@@ -1,11 +1,8 @@
-import subprocess
-import re
+import modules
 
-def zsteg(location):
-	data = subprocess.run(['zsteg','-a',location],text=True,capture_output=True)
-	data = re.findall(r'text: ".*"',data.stdout)
-	for i in range(len(data)):
-		data[i]=data[i][7:-1]
-	print(data)
-
+def pngfile(location):
+	print("strings: \n")
+	modules.strings(location)
+	print("zsteg: \n")
+	modules.zsteg(location)
 	
