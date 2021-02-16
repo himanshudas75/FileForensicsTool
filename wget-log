@@ -1,11 +1,0 @@
---2021-02-15 14:45:59--  https://www.google.com/url?sa=i
-Resolving www.google.com (www.google.com)... 172.217.163.164, 2404:6800:4007:801::2004
-Connecting to www.google.com (www.google.com)|172.217.163.164|:443... connected.
-HTTP request sent, awaiting response... 200 OK
-Length: unspecified [text/html]
-Saving to: 'url?sa=i'
-
-url?sa=i                [<=>              ]       0  --.-KB/s               url?sa=i                [ <=>             ]   1.39K  --.-KB/s    in 0s      
-
-2021-02-15 14:46:00 (16.2 MB/s) - 'url?sa=i' saved [1426]
-
