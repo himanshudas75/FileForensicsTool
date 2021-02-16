@@ -1,6 +1,7 @@
 import FileType
 import argparse
 import os.path
+import CommonModules
 
 if __name__ == "__main__":
 	parser=argparse.ArgumentParser()
@@ -14,9 +15,12 @@ if __name__ == "__main__":
 		if ftype == 'PNG':
 			import png
 			print("PNG")
+			CommonModules.strings(location)
 			png.zsteg(location)
 
 		elif ftype == 'JPEG':
+			import jpeg
 			print('JPEG')
+			CommonModules.strings(location)
 	else:
 		print("WARNING! File Does Not Exist!")

@@ -1,9 +1,6 @@
 import subprocess
 import re
 
-def strings(location):
-	data = subprocess.run(['strings',location],text=True,capture_output=True)
-
 def zsteg(location):
 	data = subprocess.run(['zsteg','-a',location],text=True,capture_output=True)
 	data = re.findall(r'text: ".*"',data.stdout)
