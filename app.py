@@ -10,6 +10,7 @@ if __name__ == "__main__":
 
 	if os.path.isfile(location):
 		ftype=FileType.identify(location)
+		
 		if ftype == 'PNG':
 			import png
 			print("PNG")
