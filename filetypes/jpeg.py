@@ -1,5 +1,5 @@
 import modules
 
 def jpegfile(location):
-	print("strings: \n")
+	modules.xxd(location)
 	modules.strings(location)
