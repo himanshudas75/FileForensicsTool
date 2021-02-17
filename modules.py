@@ -29,3 +29,10 @@ def xxd(location):
 	data=subprocess.run(['xxd','-p',location],text=True,capture_output=True)
 	data=data.stdout
 	print(data)
+
+def exiftool(location):
+	#PNG, JPEG, TXT
+	print('exiftool: \n')
+	data=subprocess.run(['exiftool',location],text=True,capture_output=True)
+	data=data.stdout
+	print(data)

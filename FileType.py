@@ -1,5 +1,6 @@
 import subprocess
 import re
+#import filetypes
 
 def identify(location):
 	data=subprocess.run(['file',location],capture_output=True,text=True)
