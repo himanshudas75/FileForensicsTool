@@ -1,18 +1,12 @@
 import subprocess
 import re
 
-def zsteg(location):
-	#PNG
+def cat(location):
+	#TXT
 	f=open('REPORT.md','a')
-	f.write('zsteg: \n')
-	data = subprocess.run(['zsteg','-a',location],text=True,capture_output=True)
+	f.write('cat: \n')
+	data=subprocess.run(['cat',location],text=True,capture_output=True)
 	data=data.stdout
-	'''text = re.findall(r'text: ".*"',data)
-	ctf=re.findall(r'\w+[ctf]{.+}|\w+[CTF]{.+}',data)
-	for i in range(len(text)):
-		text[i]=text[i][7:-1]
-	f.write(text+'\n')
-	f.write(ctf+'\n')'''
 	f.write(data+'\n')
 	f.close()
 
@@ -28,6 +22,31 @@ def strings(location):
 	f.write(ctf+'\n')'''
 	f.write(data+'\n')
 	f.close()
+
+def binwalk(location):
+	#PNG, JPEG
+	f=open('REPORT.md','a')
+	f.write('binwalk: \n')
+	data=subprocess.run(['binwalk',location],text=True,capture_output=True)
+	data=data.stdout
+	f.write(data+'\n')
+	f.close()
+
+def zsteg(location):
+	#PNG
+	f=open('REPORT.md','a')
+	f.write('zsteg: \n')
+	data = subprocess.run(['zsteg','-a',location],text=True,capture_output=True)
+	data=data.stdout
+	'''text = re.findall(r'text: ".*"',data)
+	ctf=re.findall(r'\w+[ctf]{.+}|\w+[CTF]{.+}',data)
+	for i in range(len(text)):
+		text[i]=text[i][7:-1]
+	f.write(text+'\n')
+	f.write(ctf+'\n')'''
+	f.write(data+'\n')
+	f.close()
+
 
 def xxd(location):
 	#PNG, JPEG, TXT
@@ -46,3 +65,4 @@ def exiftool(location):
 	data=data.stdout
 	f.write(data+'\n')
 	f.close()
+
