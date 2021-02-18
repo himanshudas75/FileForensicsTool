@@ -1,10 +1,18 @@
 import subprocess
+import os.path
 import re
+
+def filename(location):		#for finding filename
+	filename=re.findall(r'[\w,\.]+',location)[-1]
+	return filename
+
+pwd=subprocess.run(['pwd'],text=True,capture_output=True)	#finding present working directory
+pwd=pwd.stdout[:-1]
 
 def cat(location):
 	#TXT
 	f=open('REPORT.md','a')
-	f.write('cat: \n')
+	f.write('cat: \n\n')
 	data=subprocess.run(['cat',location],text=True,capture_output=True)
 	data=data.stdout
 	f.write(data+'\n')
@@ -13,7 +21,7 @@ def cat(location):
 def strings(location):
 	#PNG, JPEG
 	f=open('REPORT.md','a')
-	f.write('strings: \n')
+	f.write('strings: \n\n')
 	data=subprocess.run(['strings',location],text=True,capture_output=True)
 	data=data.stdout
 	'''text=re.findall(r'\w+',data)
@@ -27,15 +35,18 @@ def binwalk(location):
 	#PNG, JPEG
 	f=open('REPORT.md','a')
 	f.write('binwalk: \n')
-	data=subprocess.run(['binwalk',location],text=True,capture_output=True)
+	data=subprocess.run(['binwalk','-e',location],text=True,capture_output=True)
 	data=data.stdout
-	f.write(data+'\n')
+	f.write(data)
+	extdir=pwd+'/_'+filename(location)+'.extracted'
+	if(os.path.isdir(extdir)):
+		f.write('Embedded files extracted to: '+extdir+'/\n\n')
 	f.close()
 
 def zsteg(location):
 	#PNG
 	f=open('REPORT.md','a')
-	f.write('zsteg: \n')
+	f.write('zsteg: \n\n')
 	data = subprocess.run(['zsteg','-a',location],text=True,capture_output=True)
 	data=data.stdout
 	'''text = re.findall(r'text: ".*"',data)
@@ -51,16 +62,21 @@ def zsteg(location):
 def xxd(location):
 	#PNG, JPEG, TXT
 	f=open('REPORT.md','a')
-	f.write('xxd: \n')
-	data=subprocess.run(['xxd','-p',location],text=True,capture_output=True)
-	data=data.stdout
-	f.write(data+'\n')
+	f.write('xxd: \n\n')
+	subprocess.run(['xxd',location,'hexdump'])
+	subprocess.run(['xxd','-p',location,'hexdump_plain'])
+	extfile1=pwd+'/hexdump'
+	extfile2=pwd+'/hexdump_plain'
+	if(os.path.isfile(extfile1)):
+		f.write('Hexdump stored in file: '+extfile1+'\n')
+	if(os.path.isfile(extfile2)):
+		f.write('Plain hexdump stored in file: '+extfile2+'\n\n')
 	f.close()
 
 def exiftool(location):
 	#PNG, JPEG, TXT
 	f=open('REPORT.md','a')
-	f.write('exiftool: \n')
+	f.write('exiftool: \n\n')
 	data=subprocess.run(['exiftool',location],text=True,capture_output=True)
 	data=data.stdout
 	f.write(data+'\n')
