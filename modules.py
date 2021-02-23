@@ -31,6 +31,7 @@ def strings(location):
 	f.write('\nLast four lines:\n')
 	for i in range(-4,0):
 		f.write(data[i]+'\n')
+	f.write('\n')
 	f.close()
 
 def binwalk(location):
@@ -84,3 +85,11 @@ def exiftool(location):
 	f.write(data+'\n')
 	f.close()
 
+def stegextract(location):
+	#PNG, JPEG, GIF
+	f=open('REPORT.md','a')
+	f.write('stegextract: \n\n')
+	data=subprocess.run(['stegextract',location],text=True,capture_output=True)
+	data=data.stdout
+	f.write(data+'\n')
+	f.close()

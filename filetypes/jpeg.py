@@ -5,3 +5,4 @@ def jpegfile(location):
 	modules.binwalk(location)
 	modules.xxd(location)
 	modules.strings(location)
+	modules.stegextract(location)
