@@ -24,11 +24,13 @@ def strings(location):
 	f.write('strings: \n\n')
 	data=subprocess.run(['strings',location],text=True,capture_output=True)
 	data=data.stdout
-	'''text=re.findall(r'\w+',data)
-	ctf=re.findall(r'\w+[ctf]{.+}|\w+[CTF]{.+}',data)
-	f.write(text+'\n')
-	f.write(ctf+'\n')'''
-	f.write(data+'\n')
+	data=re.findall(r'.+',data)
+	f.write('First four lines:\n')
+	for i in range(4):
+		f.write(data[i]+'\n')
+	f.write('\nLast four lines:\n')
+	for i in range(-4,0):
+		f.write(data[i]+'\n')
 	f.close()
 
 def binwalk(location):
