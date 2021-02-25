@@ -31,6 +31,11 @@ def identify(location):
 		ftwrite('TXT')
 		filetypes.txt.txtfile(location)
 
+	elif('bitmap' in text):
+		import filetypes.bmp
+		ftwrite('BMP')
+		filetypes.bmp.bmpfile(location)
+		
 	else:
 		f=open('REPORT.md','a')
 		f.write('File type not recognised by the tool!')

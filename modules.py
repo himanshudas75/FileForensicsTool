@@ -19,7 +19,7 @@ def cat(location):
 	f.close()
 
 def strings(location):
-	#PNG, JPEG
+	#PNG, JPEG, BMP
 	f=open('REPORT.md','a')
 	f.write('strings: \n\n')
 	data=subprocess.run(['strings',location],text=True,capture_output=True)
