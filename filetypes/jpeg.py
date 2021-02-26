@@ -6,3 +6,4 @@ def jpegfile(location):
 	modules.xxd(location)
 	modules.strings(location)
 	modules.stegextract(location)
+	modules.stegseek(location)

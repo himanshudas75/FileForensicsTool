@@ -37,7 +37,7 @@ def strings(location):
 def binwalk(location):
 	#PNG, JPEG
 	f=open('REPORT.md','a')
-	f.write('binwalk: \n')
+	f.write('**binwalk:** \n')
 	data=subprocess.run(['binwalk','-e',location],text=True,capture_output=True)
 	data=data.stdout
 	f.write(data)
@@ -49,7 +49,7 @@ def binwalk(location):
 def zsteg(location):
 	#PNG
 	f=open('REPORT.md','a')
-	f.write('zsteg: \n\n')
+	f.write('**zsteg:** \n\n')
 	data = subprocess.run(['zsteg','-a',location],text=True,capture_output=True)
 	data=data.stdout
 	text = re.findall(r'text: ".*"',data)
@@ -62,7 +62,7 @@ def zsteg(location):
 def xxd(location):
 	#PNG, JPEG, TXT, BMP
 	f=open('REPORT.md','a')
-	f.write('xxd: \n\n')
+	f.write('**xxd:** \n\n')
 	subprocess.run(['xxd',location,'hexdump'])
 	subprocess.run(['xxd','-p',location,'hexdump_plain'])
 	extfile1=pwd+'/hexdump'
@@ -76,7 +76,7 @@ def xxd(location):
 def exiftool(location):
 	#PNG, JPEG, TXT, BMP
 	f=open('REPORT.md','a')
-	f.write('exiftool: \n\n')
+	f.write('**exiftool:** \n\n')
 	data=subprocess.run(['exiftool',location],text=True,capture_output=True)
 	data=data.stdout
 	f.write(data+'\n')
@@ -85,7 +85,7 @@ def exiftool(location):
 def stegextract(location):
 	#PNG, JPEG, GIF
 	f=open('REPORT.md','a')
-	f.write('stegextract: \n\n')
+	f.write('**stegextract:** \n\n')
 	data=subprocess.run(['stegextract',location],text=True,capture_output=True)
 	data=data.stdout
 	f.write(data+'\n')
@@ -94,8 +94,17 @@ def stegextract(location):
 def pngcheck(location):
 	#PNG
 	f=open('REPORT.md','a')
-	f.write('pngcheck: \n\n')
+	f.write('**pngcheck:** \n\n')
 	data=subprocess.run(['pngcheck',location],text=True,capture_output=True)
 	data=data.stdout
+	f.write(data+'\n')
+	f.close()
+
+def stegseek(location):
+	#JPEG
+	f=open('REPORT.md','a')
+	f.write('***stegseek:*** \n\n')
+	data=subprocess.run(['stegseek',location,'/usr/share/wordlists/rockyou.txt'],text=True,capture_output=True)
+	data=data.stdout()
 	f.write(data+'\n')
 	f.close()
