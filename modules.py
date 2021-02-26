@@ -12,7 +12,7 @@ pwd=pwd.stdout[:-1]
 def cat(location):
 	#TXT
 	f=open('REPORT.md','a')
-	f.write('cat: \n\n')
+	f.write('**cat:** \n\n')
 	data=subprocess.run(['cat',location],text=True,capture_output=True)
 	data=data.stdout
 	f.write(data+'\n')
@@ -21,7 +21,7 @@ def cat(location):
 def strings(location):
 	#PNG, JPEG, BMP
 	f=open('REPORT.md','a')
-	f.write('strings: \n\n')
+	f.write('**strings:** \n\n')
 	data=subprocess.run(['strings',location],text=True,capture_output=True)
 	data=data.stdout
 	data=re.findall(r'.+',data)
@@ -87,6 +87,15 @@ def stegextract(location):
 	f=open('REPORT.md','a')
 	f.write('stegextract: \n\n')
 	data=subprocess.run(['stegextract',location],text=True,capture_output=True)
+	data=data.stdout
+	f.write(data+'\n')
+	f.close()
+
+def pngcheck(location):
+	#PNG
+	f=open('REPORT.md','a')
+	f.write('pngcheck: \n\n')
+	data=subprocess.run(['pngcheck',location],text=True,capture_output=True)
 	data=data.stdout
 	f.write(data+'\n')
 	f.close()
