@@ -60,7 +60,7 @@ def zsteg(location):
 
 
 def xxd(location):
-	#PNG, JPEG, TXT
+	#PNG, JPEG, TXT, BMP
 	f=open('REPORT.md','a')
 	f.write('xxd: \n\n')
 	subprocess.run(['xxd',location,'hexdump'])
@@ -74,7 +74,7 @@ def xxd(location):
 	f.close()
 
 def exiftool(location):
-	#PNG, JPEG, TXT
+	#PNG, JPEG, TXT, BMP
 	f=open('REPORT.md','a')
 	f.write('exiftool: \n\n')
 	data=subprocess.run(['exiftool',location],text=True,capture_output=True)
