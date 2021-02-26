@@ -3,7 +3,7 @@ import os.path
 import re
 
 def filename(location):		#for finding filename
-	filename=re.findall(r'[\w,\.]+',location)[-1]
+	filename=re.findall(r'[^/]+',location)[-1]
 	return filename
 
 pwd=subprocess.run(['pwd'],text=True,capture_output=True)	#finding present working directory
@@ -52,13 +52,10 @@ def zsteg(location):
 	f.write('zsteg: \n\n')
 	data = subprocess.run(['zsteg','-a',location],text=True,capture_output=True)
 	data=data.stdout
-	'''text = re.findall(r'text: ".*"',data)
-	ctf=re.findall(r'\w+[ctf]{.+}|\w+[CTF]{.+}',data)
+	text = re.findall(r'text: ".*"',data)
 	for i in range(len(text)):
 		text[i]=text[i][7:-1]
-	f.write(text+'\n')
-	f.write(ctf+'\n')'''
-	f.write(data+'\n')
+		f.write(text[i]+'\n')
 	f.close()
 
 

@@ -2,11 +2,12 @@ import subprocess
 import re
 
 def fnwrite(location):
-	filename=re.findall(r'[\w,\.]+',location)[-1]	
+	location+='/'
+	filename=re.findall(r'[^/]+',location)[-1]	
 	f=open('REPORT.md','w')
 	f.write('FileName: '+filename+'\n')
+
 def ftwrite(filetype):
-	
 	f=open('REPORT.md','a')
 	f.write('FileType: '+filetype+'\n\n')
 	f.close()
