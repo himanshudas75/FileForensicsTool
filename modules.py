@@ -14,23 +14,23 @@ def cat(location):
 	f=open('REPORT.md','a')
 	f.write('**cat:** \n\n')
 	data=subprocess.run(['cat',location],text=True,capture_output=True)
-	data=data.stdout
-	f.write(data+'\n')
+	out=data.stdout
+	f.write(out+'\n')
 	f.close()
 
 def strings(location):
-	#PNG, JPEG, BMP
+	#PNG, JPEG, BMP, PDF
 	f=open('REPORT.md','a')
 	f.write('**strings:** \n\n')
 	data=subprocess.run(['strings',location],text=True,capture_output=True)
-	data=data.stdout
-	data=re.findall(r'.+',data)
+	out=data.stdout
+	out=re.findall(r'.+',out)
 	f.write('First four lines:\n')
 	for i in range(4):
-		f.write(data[i]+'\n')
+		f.write(out[i]+'\n')
 	f.write('\nLast four lines:\n')
 	for i in range(-4,0):
-		f.write(data[i]+'\n')
+		f.write(out[i]+'\n')
 	f.write('\n')
 	f.close()
 
@@ -39,8 +39,8 @@ def binwalk(location):
 	f=open('REPORT.md','a')
 	f.write('**binwalk:** \n')
 	data=subprocess.run(['binwalk','-e',location],text=True,capture_output=True)
-	data=data.stdout
-	f.write(data)
+	out=data.stdout
+	f.write(out)
 	extdir=pwd+'/_'+filename(location)+'.extracted'
 	if(os.path.isdir(extdir)):
 		f.write('Embedded files extracted to: '+extdir+'/\n\n')
@@ -51,8 +51,8 @@ def zsteg(location):
 	f=open('REPORT.md','a')
 	f.write('**zsteg:** \n\n')
 	data = subprocess.run(['zsteg','-a',location],text=True,capture_output=True)
-	data=data.stdout
-	text = re.findall(r'text: ".*"',data)
+	out=data.stdout
+	text = re.findall(r'text: ".*"',out)
 	for i in range(len(text)):
 		text[i]=text[i][7:-1]
 		f.write(text[i]+'\n')
@@ -78,8 +78,8 @@ def exiftool(location):
 	f=open('REPORT.md','a')
 	f.write('**exiftool:** \n\n')
 	data=subprocess.run(['exiftool',location],text=True,capture_output=True)
-	data=data.stdout
-	f.write(data+'\n')
+	out=data.stdout
+	f.write(out+'\n')
 	f.close()
 
 def stegextract(location):
@@ -87,8 +87,8 @@ def stegextract(location):
 	f=open('REPORT.md','a')
 	f.write('**stegextract:** \n\n')
 	data=subprocess.run(['stegextract',location],text=True,capture_output=True)
-	data=data.stdout
-	f.write(data+'\n')
+	out=data.stdout
+	f.write(out+'\n')
 	f.close()
 
 def pngcheck(location):
@@ -96,8 +96,8 @@ def pngcheck(location):
 	f=open('REPORT.md','a')
 	f.write('**pngcheck:** \n\n')
 	data=subprocess.run(['pngcheck',location],text=True,capture_output=True)
-	data=data.stdout
-	f.write(data+'\n')
+	out=data.stdout
+	f.write(out+'\n')
 	f.close()
 
 def stegseek(location):
@@ -111,4 +111,13 @@ def stegseek(location):
 		f.write('File extracted to: '+outputpath+'\n\n')
 	else:
 		f.write('No valid passphrase found\n\n')
+	f.close()
+
+def pdf_parser(location):
+	#PDF
+	f=open('REPORT.md','a')
+	f.write('**pdf-parser:**\n\n')
+	data=subprocess.run(['pdf-parser',location],text=True,capture_output=True)
+	out=data.stdout
+	f.write(out+'\n')
 	f.close()

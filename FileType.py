@@ -36,7 +36,11 @@ def identify(location):
 		import filetypes.bmp
 		ftwrite('BMP')
 		filetypes.bmp.bmpfile(location)
-		
+
+	elif('PDF' in text):
+		import filetypes.pdf
+		ftwrite('PDF')
+		filetypes.pdf.pdffile(location)		
 	else:
 		f=open('REPORT.md','a')
 		f.write('File type not recognised by the tool!')
