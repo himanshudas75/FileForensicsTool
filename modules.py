@@ -103,8 +103,12 @@ def pngcheck(location):
 def stegseek(location):
 	#JPEG
 	f=open('REPORT.md','a')
-	f.write('***stegseek:*** \n\n')
-	data=subprocess.run(['stegseek',location,'/usr/share/wordlists/rockyou.txt'],text=True,capture_output=True)
-	data=data.stdout()
-	f.write(data+'\n')
+	f.write('**stegseek:** \n\n')
+	data=subprocess.run(['stegseek',location,'/usr/share/wordlists/rockyou.txt'],text=True,capture_output=True,input='y')
+	outputpath=pwd+'/'+filename(location)+'.out'
+	if(os.path.isfile(outputpath)):
+		f.write('Valid passphrase found\n')
+		f.write('File extracted to: '+outputpath+'\n\n')
+	else:
+		f.write('No valid passphrase found\n\n')
 	f.close()
