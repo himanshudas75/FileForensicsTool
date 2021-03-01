@@ -113,6 +113,15 @@ def stegseek(location):
 		f.write('No valid passphrase found\n\n')
 	f.close()
 
+def pdfid(location):
+	#PDF
+	f=open('REPORT.md','a')
+	f.write('**pdfid:**\n\n')
+	data=subprocess.run(['pdfid',location],text=True,capture_output=True)
+	out=data.stdout
+	f.write(out+'\n')
+	f.close()
+
 def pdf_parser(location):
 	#PDF
 	f=open('REPORT.md','a')
