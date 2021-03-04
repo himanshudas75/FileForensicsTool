@@ -18,20 +18,24 @@ def cat(location):
 	f.write(out+'\n')
 	f.close()
 
-def strings(location):
+def strings(location,begin,end):
 	#PNG, JPEG, BMP, PDF
 	f=open('REPORT.md','a')
 	f.write('**strings:** \n\n')
-	data=subprocess.run(['strings',location],text=True,capture_output=True)
+	data=subprocess.run(['xxd','-p',location],text=True,capture_output=True)
 	out=data.stdout
-	out=re.findall(r'.+',out)
-	f.write('First four lines:\n')
-	for i in range(4):
-		f.write(out[i]+'\n')
-	f.write('\nLast four lines:\n')
-	for i in range(-4,0):
-		f.write(out[i]+'\n')
-	f.write('\n')
+	out=out.replace('\n','')
+	out=out.replace(end,'\n'+end)
+	last=re.findall('.+',out)
+	out=out.replace('\n','')
+	out=out.replace(begin,begin+'\n')
+	first=re.findall('.+',out)
+	if(len(first)):
+		first=first[0][:-len(begin)]
+		f.write(bytearray.fromhex(first).decode()+'\n')
+	if(len(last)):
+		last=last[-1][len(end):]
+		f.write(bytearray.fromhex(last).decode()+'\n')
 	f.close()
 
 def binwalk(location):
