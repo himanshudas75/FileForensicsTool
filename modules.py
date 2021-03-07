@@ -134,3 +134,12 @@ def pdf_parser(location):
 	out=data.stdout
 	f.write(out+'\n')
 	f.close()
+
+def unzip(location):
+	#Office files, ZIP
+	f=open('REPORT.md','a')
+	f.write('**uzip:**\n\n')
+	data=subprocess.run(['unzip','-o',location,'-d','./OfficeExtract'],capture_output=True,text=True)
+	out=data.stdout
+	f.write(out+'\n')
+	f.close()

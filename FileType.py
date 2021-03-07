@@ -40,7 +40,12 @@ def identify(location):
 	elif('PDF' in text):
 		import filetypes.pdf
 		ftwrite('PDF')
-		filetypes.pdf.pdffile(location)		
+		filetypes.pdf.pdffile(location)	
+
+	elif('Microsoft' in text):
+		import filetypes.office
+		ftwrite('Office File')
+		filetypes.office.officefile(location)	
 	else:
 		f=open('REPORT.md','a')
 		f.write('File type not recognised by the tool!')
