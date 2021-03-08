@@ -11,17 +11,15 @@ pwd=pwd.stdout[:-1]
 
 def cat(location):
 	#TXT
-	f=open('REPORT.md','a')
-	f.write('**cat:** \n\n')
+	output='**cat:**\n\n'
 	data=subprocess.run(['cat',location],text=True,capture_output=True)
 	out=data.stdout
-	f.write(out+'\n')
-	f.close()
+	output+=f'\n{out}\n'
+	return output
 
 def strings(location,begin,end):
 	#PNG, JPEG, BMP, PDF
-	f=open('REPORT.md','a')
-	f.write('**strings:** \n\n')
+	output='**strings:** \n\n'
 	data=subprocess.run(['xxd','-p',location],text=True,capture_output=True)
 	out=data.stdout
 	out=out.replace('\n','')
@@ -32,90 +30,77 @@ def strings(location,begin,end):
 	first=re.findall('.+',out)
 	if(len(first)):
 		first=first[0][:-len(begin)]
-		f.write(bytearray.fromhex(first).decode()+'\n')
+		output+=f'\n{bytearray.fromhex(first).decode()}\n'
 	if(len(last)):
 		last=last[-1][len(end):]
-		f.write(bytearray.fromhex(last).decode()+'\n')
-	f.close()
+		output+=f'\n{bytearray.fromhex(last).decode()}\n'
+	return output
 
 def binwalk(location):
 	#PNG, JPEG
-	f=open('REPORT.md','a')
-	f.write('**binwalk:** \n')
+	output='**binwalk:** \n\n'
 	data=subprocess.run(['binwalk','-e',location],text=True,capture_output=True)
 	out=data.stdout
-	f.write(out)
+	output+=f'\n{out}'
 	extdir=pwd+'/_'+filename(location)+'.extracted'
 	if(os.path.isdir(extdir)):
-		f.write('Embedded files extracted to: '+extdir+'/\n\n')
-	f.close()
+		output+=f'\nEmbedded files extracted to: {extdir}/\n\n'
+	return output
 
 def zsteg(location):
 	#PNG
-	f=open('REPORT.md','a')
-	f.write('**zsteg:** \n\n')
+	output='**zsteg:** \n\n'
 	data = subprocess.run(['zsteg','-a',location],text=True,capture_output=True)
 	out=data.stdout
 	text = re.findall(r'text: ".*"',out)
 	for i in range(len(text)):
 		text[i]=text[i][7:-1]
-		f.write(text[i]+'\n')
-	f.close()
-
+		output+=f'{text[i]}\n'
+	return output
 
 def xxd(location):
 	#PNG, JPEG, TXT, BMP
-	f=open('REPORT.md','a')
-	f.write('**xxd:** \n\n')
+	output='**xxd:**\n\n'
 	subprocess.run(['xxd',location,'hexdump'])
-	subprocess.run(['xxd','-p',location,'hexdump_plain'])
-	extfile1=pwd+'/hexdump'
-	extfile2=pwd+'/hexdump_plain'
-	if(os.path.isfile(extfile1)):
-		f.write('Hexdump stored in file: '+extfile1+'\n')
-	if(os.path.isfile(extfile2)):
-		f.write('Plain hexdump stored in file: '+extfile2+'\n\n')
-	f.close()
+	extfile=pwd+'/hexdump'
+	if(os.path.isfile(extfile)):
+		output+=f'Hexdump stored in file: {extfile}\n'
+	return output
 
 def exiftool(location):
 	#PNG, JPEG, TXT, BMP
-	f=open('REPORT.md','a')
-	f.write('**exiftool:** \n\n')
+	output='**exiftool:** \n\n'
 	data=subprocess.run(['exiftool',location],text=True,capture_output=True)
 	out=data.stdout
-	f.write(out+'\n')
-	f.close()
+	output+=f'\n{out}\n'
+	return output
 
 def stegextract(location):
 	#PNG, JPEG, GIF
-	f=open('REPORT.md','a')
-	f.write('**stegextract:** \n\n')
+	output='**stegextract:**\n\n'
 	data=subprocess.run(['stegextract',location],text=True,capture_output=True)
 	out=data.stdout
-	f.write(out+'\n')
-	f.close()
+	output+=f'\n{out}\n'
+	return output
 
 def pngcheck(location):
 	#PNG
-	f=open('REPORT.md','a')
-	f.write('**pngcheck:** \n\n')
+	output='**pngcheck:**\n\n'
 	data=subprocess.run(['pngcheck',location],text=True,capture_output=True)
 	out=data.stdout
-	f.write(out+'\n')
-	f.close()
+	output+=f'\n{out}\n'
+	return output
 
 def stegseek(location):
 	#JPEG
-	f=open('REPORT.md','a')
-	f.write('**stegseek:** \n\n')
+	output='**stegseek:**\n\n'
 	data=subprocess.run(['stegseek',location,'/usr/share/wordlists/rockyou.txt'],text=True,capture_output=True,input='y')
 	outputpath=pwd+'/'+filename(location)+'.out'
 	if(os.path.isfile(outputpath)):
-		f.write('Valid passphrase found\n')
-		f.write('File extracted to: '+outputpath+'\n\n')
+		output+=f'Valid passphrase found\nFile extracted to: {outputpath}\n\n'
 	else:
-		f.write('No valid passphrase found\n\n')
-	f.close()
+		output+='No valid passphrase found\n\n'
+	return output
 
 def pdfid(location):
 	#PDF

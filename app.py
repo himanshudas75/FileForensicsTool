@@ -2,6 +2,9 @@ import FileType
 import argparse
 import os.path
 import subprocess
+import time
+
+start=time.perf_counter()
 
 if __name__ == "__main__":
 	parser=argparse.ArgumentParser()
@@ -17,3 +20,10 @@ if __name__ == "__main__":
 
 	else:
 		print('WARNING! File Does Not Exist!')
+
+finish=time.perf_counter()
+
+print(f'\nFinished in {round(finish-start,2)} second(s)' )
+
+#Without Threading, 5.68 seconds
+#With Threading, 4.8 seconds
