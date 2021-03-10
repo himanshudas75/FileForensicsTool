@@ -1,6 +1,25 @@
 import modules
+import concurrent.futures
 
 def pdffile(location):
-	modules.strings(location,'PDF','EOF')
-	modules.pdfid(location)
-	modules.pdf_parser(location)
+	begin='25504446'
+	end='25454f'
+	t=[]
+	output=[]
+
+	with concurrent.futures.ThreadPoolExecutor() as executor:
+		t.append(executor.submit(modules.exiftool,location))
+		t.append(executor.submit(modules.xxd,location))
+		t.append(executor.submit(modules.strings,location,begin,end,'PDF'))
+		t.append(executor.submit(modules.pdfid,location))
+		t.append(executor.submit(modules.pdf_parser,location))
+	
+	for thread in t:
+		output.append(thread.result())
+
+	f=open('REPORT.md','a')
+	for i in output:
+		f.write(i+'\n')
+	f.close()
+
+	

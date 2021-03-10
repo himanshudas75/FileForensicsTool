@@ -11,12 +11,12 @@ def jpegfile(location):
 		t.append(executor.submit(modules.exiftool,location))
 		t.append(executor.submit(modules.binwalk,location))
 		t.append(executor.submit(modules.xxd,location))
-		t.append(executor.submit(modules.strings,location,begin,end))
+		t.append(executor.submit(modules.strings,location,begin,end,'JPEG'))
 		t.append(executor.submit(modules.stegextract,location))
 		t.append(executor.submit(modules.stegseek,location))
 
-		for thread in t:
-			output.append(thread.result())
+	for thread in t:
+		output.append(thread.result())
 
 	f=open('REPORT.md','a')
 	for i in output:

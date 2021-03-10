@@ -17,11 +17,14 @@ def cat(location):
 	output+=f'\n{out}\n'
 	return output
 
-def strings(location,begin,end):
+def strings(location,begin,end,ftype):
 	#PNG, JPEG, BMP, PDF
 	output='**strings:** \n\n'
 	data=subprocess.run(['xxd','-p',location],text=True,capture_output=True)
 	out=data.stdout
+	if(ftype=='bitmap'):
+		output+=f'\n{out}\n'
+		return output
 	out=out.replace('\n','')
 	out=out.replace(end,'\n'+end)
 	last=re.findall('.+',out)
@@ -104,27 +107,24 @@ def stegseek(location):
 
 def pdfid(location):
 	#PDF
-	f=open('REPORT.md','a')
-	f.write('**pdfid:**\n\n')
+	output='**pdfid:**\n\n'
 	data=subprocess.run(['pdfid',location],text=True,capture_output=True)
 	out=data.stdout
-	f.write(out+'\n')
-	f.close()
+	output+=f'\n{out}\n'
+	return output
 
 def pdf_parser(location):
 	#PDF
-	f=open('REPORT.md','a')
-	f.write('**pdf-parser:**\n\n')
+	output='**pdf-parser:**\n\n'
 	data=subprocess.run(['pdf-parser',location],text=True,capture_output=True)
 	out=data.stdout
-	f.write(out+'\n')
-	f.close()
+	output+=f'\n{out}\n'
+	return output
 
 def unzip(location):
 	#Office files, ZIP
-	f=open('REPORT.md','a')
-	f.write('**uzip:**\n\n')
+	output='**unzip:**\n\n'
 	data=subprocess.run(['unzip','-o',location,'-d','./OfficeExtract'],capture_output=True,text=True)
 	out=data.stdout
-	f.write(out+'\n')
-	f.close()
+	output+=f'\n{out}\n'
+	return output
