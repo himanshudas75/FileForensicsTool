@@ -42,7 +42,7 @@ def strings(location,begin,end,ftype):
 def binwalk(location):
 	#PNG, JPEG
 	output='**binwalk:** \n\n'
-	data=subprocess.run(['binwalk','-e',location],text=True,capture_output=True)
+	data=subprocess.run(['binwalk','--extract',"--dd='*'",location],text=True,capture_output=True)
 	out=data.stdout
 	output+=f'\n{out}'
 	extdir=pwd+'/_'+filename(location)+'.extracted'
