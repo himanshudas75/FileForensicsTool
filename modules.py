@@ -109,7 +109,7 @@ def stegseek(location):
 def outguess(location):
 	#JPEG
 	output='**outguess:**\n\n'
-	data=subprocess.run(['outguess','-r',location,pwd+'/extracted'],capture_output=True,text=True)
+	data=subprocess.run(['outguess','-r',location,pwd+'/outguess_extracted'],capture_output=True,text=True)
 	if(data.returncode==0):
 		output+=f'\n{data.stdout}\n'
 		return output
@@ -135,7 +135,9 @@ def pdf_parser(location):
 def unzip(location):
 	#Office files, ZIP
 	output='**unzip:**\n\n'
-	data=subprocess.run(['unzip','-o',location,'-d','./OfficeExtract'],capture_output=True,text=True)
-	out=data.stdout
-	output+=f'\n{out}\n'
+	data=subprocess.run(['unzip','-o',location,'-d',pwd+'/ArchiveExtract'],capture_output=True,text=True)
+	if(data.returncode==0):
+		output+=f'\n{data.stdout}\n'
+		return output
+	output+=f'\n{data.stderr}\n'
 	return output

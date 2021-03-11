@@ -45,7 +45,13 @@ def identify(location):
 	elif('Microsoft' in text):
 		import filetypes.office
 		ftwrite('Office File')
-		filetypes.office.officefile(location)	
+		filetypes.office.officefile(location)
+
+	elif('Zip' in text):
+		import filetypes.zip
+		ftwrite('ZIP')
+		filetypes.zip.zipfile(location)
+		
 	else:
 		f=open('REPORT.md','a')
 		f.write('File type not recognised by the tool!')
