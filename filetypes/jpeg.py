@@ -14,6 +14,7 @@ def jpegfile(location):
 		t.append(executor.submit(modules.strings,location,begin,end,'JPEG'))
 		t.append(executor.submit(modules.stegextract,location))
 		t.append(executor.submit(modules.stegseek,location))
+		t.append(executor.submit(modules.outguess,location))
 
 	for thread in t:
 		output.append(thread.result())

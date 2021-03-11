@@ -90,8 +90,9 @@ def pngcheck(location):
 	#PNG
 	output='**pngcheck:**\n\n'
 	data=subprocess.run(['pngcheck',location],text=True,capture_output=True)
-	out=data.stdout
-	output+=f'\n{out}\n'
+	if(data.returncode==0):
+		output+=f'\n{data.stdout}\n'
+	output+=f'\n{data.stderr}\n'
 	return output
 
 def stegseek(location):
@@ -103,6 +104,16 @@ def stegseek(location):
 		output+=f'Valid passphrase found\nFile extracted to: {outputpath}\n\n'
 	else:
 		output+='No valid passphrase found\n\n'
+	return output
+
+def outguess(location):
+	#JPEG
+	output='**outguess:**\n\n'
+	data=subprocess.run(['outguess','-r',location,pwd+'/extracted'],capture_output=True,text=True)
+	if(data.returncode==0):
+		output+=f'\n{data.stdout}\n'
+		return output
+	output+=f'\n{data.stderr}\n'
 	return output
 
 def pdfid(location):
