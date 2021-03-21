@@ -141,3 +141,13 @@ def unzip(location):
 		return output
 	output+=f'\n{data.stderr}\n'
 	return output
+
+def olevba(location):
+	#Office
+	output='**olevba:**\n\n'
+	data=subproces.run(['olevba','-c',location],text=True,capture_output=True)
+	if(data.returncode==0):
+		output+=f'\n{data.stdout}\n'
+		return output
+	output+=f'\n{data.stderr}\n'
+	return output

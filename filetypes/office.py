@@ -9,6 +9,7 @@ def officefile(location):
 		t.append(executor.submit(modules.exiftool,location))
 		t.append(executor.submit(modules.xxd,location))
 		t.append(executor.submit(modules.unzip,location))
+		t.append(executor.submit(modules.olevba,location))
 	
 	for thread in t:
 		output.append(thread.result())
