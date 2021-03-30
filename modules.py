@@ -145,9 +145,19 @@ def unzip(location):
 def olevba(location):
 	#Office
 	output='**olevba:**\n\n'
-	data=subproces.run(['olevba','-c',location],text=True,capture_output=True)
+	data=subprocess.run(['olevba','-c',location],text=True,capture_output=True)
 	if(data.returncode==0):
 		output+=f'\n{data.stdout}\n'
 		return output
 	output+=f'\n{data.stderr}\n'
+	return output
+
+def sox(location):
+	#WAV
+	output='**sox:**\n'
+	data=subprocess.run(['sox',location,'-n','spectrogram'],text=True,capture_output=True)
+	if(data.returncode==0):
+		output+=f'\nSpectrogram of the audio file has been stored in {pwd}/spectrogram.png\n'
+		return output
+	output=f'\n{data.stderr}\n'
 	return output

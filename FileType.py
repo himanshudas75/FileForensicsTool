@@ -42,7 +42,7 @@ def identify(location):
 		ftwrite('PDF')
 		filetypes.pdf.pdffile(location)	
 
-	elif('Microsoft' in text):
+	elif('Microsoft' in text and not 'WAVE' in text):
 		import filetypes.office
 		ftwrite('Office File')
 		filetypes.office.officefile(location)
@@ -51,6 +51,11 @@ def identify(location):
 		import filetypes.zip
 		ftwrite('ZIP')
 		filetypes.zip.zipfile(location)
+
+	elif('WAVE' in text):
+		import filetypes.wav
+		ftwrite('WAV')
+		filetypes.wav.wavfile(location)
 		
 	else:
 		f=open('REPORT.md','a')

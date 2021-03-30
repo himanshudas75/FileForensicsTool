@@ -20,6 +20,7 @@ if __name__ == "__main__":
 
 	else:
 		print('WARNING! File Does Not Exist!')
+	subprocess.run(['rm','-rf','__pycache__','./filetypes/__pycache__'])
 
 finish=time.perf_counter()
 
