@@ -10,6 +10,8 @@ def officefile(location):
 		t.append(executor.submit(modules.xxd,location))
 		t.append(executor.submit(modules.unzip,location))
 		t.append(executor.submit(modules.olevba,location))
+		t.append(executor.submit(modules.mraptor,location))
+		t.append(executor.submit(modules.pyxswf,location))
 	
 	for thread in t:
 		output.append(thread.result())

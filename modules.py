@@ -161,3 +161,27 @@ def sox(location):
 		return output
 	output=f'\n{data.stderr}\n'
 	return output
+
+def mraptor(location):
+	#Office
+	output='**mraptor:**\n'
+	data=subprocess.run(['mraptor',location],text=True,capture_output=True)
+	if(data.returncode==0):
+		output+=f'\n{data.stdout}\n'
+		return output
+	output+=f'\n{data.stderr}\n'
+	return output
+
+def pyxswf(location):
+	#Office
+	output='**pyxswf:**\n';
+	data=subprocess.run(['pyxswf','-o',location],text=True,capture_output=True)
+	if(data.returncode==0):
+		output+=f'\n{data.stdout}\n'
+		return output
+	output+=f'\nNot an OLE2 structured storage file'
+	data=subprocess.run(['pyxswf','-f',location],text=True,capture_output=True)
+	if(data.returncode==0):
+		output+=f'\n{data.stdout}\n'
+		return output
+	output+=f'\nNot an RTF file\n'

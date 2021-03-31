@@ -6,6 +6,7 @@ def wavfile(location):
 	output=[]
 
 	with concurrent.futures.ThreadPoolExecutor() as executor:
+		t.append(executor.submit(modules.exiftool,location))
 		t.append(executor.submit(modules.sox,location))
 
 	for thread in t:
