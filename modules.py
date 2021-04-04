@@ -73,7 +73,7 @@ def xxd(location):
 def exiftool(location):
 	#PNG, JPEG, TXT, BMP
 	output='**exiftool:** \n\n'
-	data=subprocess.run(['exiftool',location],text=True,capture_output=True)
+	data=subprocess.run([f'exiftool {location} | grep -v -E "Permissions|MIME|Subject|Title|Description|ExifTool Version Number"'],shell=True,text=True,capture_output=True)
 	out=data.stdout
 	output+=f'\n{out}\n'
 	return output
@@ -145,7 +145,7 @@ def unzip(location):
 def olevba(location):
 	#Office
 	output='**olevba:**\n\n'
-	data=subprocess.run(['olevba','-c',location],text=True,capture_output=True)
+	data=subprocess.run([f'olevba -c {location} | grep -v -E "olevba|===="'],shell=True,text=True,capture_output=True)
 	if(data.returncode==0):
 		output+=f'\n{data.stdout}\n'
 		return output
@@ -165,7 +165,7 @@ def sox(location):
 def mraptor(location):
 	#Office
 	output='**mraptor:**\n'
-	data=subprocess.run(['mraptor',location],text=True,capture_output=True)
+	data=subprocess.run([f'mraptor {location} | grep -v -E "MacroRaptor|issues at|Flags: A=|Exit code"'],shell=True,text=True,capture_output=True)
 	if(data.returncode==0):
 		output+=f'\n{data.stdout}\n'
 		return output
@@ -175,12 +175,12 @@ def mraptor(location):
 def pyxswf(location):
 	#Office
 	output='**pyxswf:**\n';
-	data=subprocess.run(['pyxswf','-o',location],text=True,capture_output=True)
+	data=subprocess.run([f'pyxswf -o {location} | grep -v -E "pyxswf|report any issue"'],shell=True,text=True,capture_output=True)
 	if(data.returncode==0):
 		output+=f'\n{data.stdout}\n'
 		return output
 	output+=f'\nNot an OLE2 structured storage file'
-	data=subprocess.run(['pyxswf','-f',location],text=True,capture_output=True)
+	data=subprocess.run([f'pyxswf -f {location} | grep -v -E "pyxswf|report any issue"'],text=True,capture_output=True)
 	if(data.returncode==0):
 		output+=f'\n{data.stdout}\n'
 		return output
