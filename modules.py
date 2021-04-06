@@ -27,10 +27,17 @@ def strings(location):
 			f=open('temp.txt','r')
 			lines=f.readlines()
 			for l in lines:
+				boolean=False
 				l=l.strip()
 				l+='\n'
 				ans=re.findall('\w*',l)
 				if(not ans==[]):
+					for i in ans:
+						if(not i==''):
+							if(len(i)==1 and not (i=='a' or i=='A')):
+								boolean=True
+					if(boolean):
+						continue
 					c=l[len(ans[0])]
 					if(c==' '):
 						output+=l+'\n'
@@ -97,7 +104,7 @@ def xxd(location):
 def exiftool(location):
 	#PNG, JPEG, TXT, BMP
 	output='**exiftool:** \n\n'
-	data=subprocess.run([f'exiftool {location} | grep -v -E "Resolution Unit|Profile Connection Space|Profile Date Time|Profile File Signature|Red Tone Reproduction Curve|Green Tone Reproduction Curve|Blue Tone Reproduction Curve|Profile Version|Profile Class|Profile CMM Type|X Resolution|Y Resolution|Y Cb Cr Sub Sampling|Permissions|MIME|Subject|Title|Description|ExifTool Version Number"'],shell=True,text=True,capture_output=True)
+	data=subprocess.run([f'exiftool {location} | grep -v -E "Luminance|Viewing Cond Illuminant Type|Red Matrix Column|Green Matrix Column|Blue Matrix Column|Resolution Unit|Profile Connection Space|Profile Date Time|Profile File Signature|Red Tone Reproduction Curve|Green Tone Reproduction Curve|Blue Tone Reproduction Curve|Profile Version|Profile Class|Profile CMM Type|X Resolution|Y Resolution|Y Cb Cr Sub Sampling|Permissions|MIME|Subject|Title|Description|ExifTool Version Number"'],shell=True,text=True,capture_output=True)
 	out=data.stdout
 	out=re.findall('.*',out)
 	for i in out:
@@ -110,7 +117,10 @@ def stegextract(location):
 	output='**stegextract:**\n\n'
 	data=subprocess.run(['stegextract',location],text=True,capture_output=True)
 	out=data.stdout
-	output+=f'\n{out}\n'
+	out=re.findall('.*',out)
+	for i in out:
+		i=i.strip()
+		output+=f'{i}\n'
 	return output
 
 def pngcheck(location):
