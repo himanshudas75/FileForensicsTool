@@ -94,9 +94,11 @@ def xxd(location):
 def exiftool(location):
 	#PNG, JPEG, TXT, BMP
 	output='**exiftool:** \n\n'
-	data=subprocess.run([f'exiftool {location} | grep -v -E "Profile Version|Profile Class|Profile CMM Type|X Resolution|Y Resolution|Y Cb Cr Sub Sampling|Permissions|MIME|Subject|Title|Description|ExifTool Version Number"'],shell=True,text=True,capture_output=True)
+	data=subprocess.run([f'exiftool {location} | grep -v -E "Resolution Unit|Profile Connection Space|Profile Date Time|Profile File Signature|Red Tone Reproduction Curve|Green Tone Reproduction Curve|Blue Tone Reproduction Curve|Profile Version|Profile Class|Profile CMM Type|X Resolution|Y Resolution|Y Cb Cr Sub Sampling|Permissions|MIME|Subject|Title|Description|ExifTool Version Number"'],shell=True,text=True,capture_output=True)
 	out=data.stdout
-	output+=f'\n{out}\n'
+	out=re.findall('.*',out)
+	for i in out:
+		output+=f'{i}\n'
 	return output
 
 def stegextract(location):
