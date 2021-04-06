@@ -33,7 +33,7 @@ def strings(location):
 				if(not ans==[]):
 					c=l[len(ans[0])]
 					if(c==' '):
-						output+=l
+						output+=l+'\n'
 			f.close()
 			subprocess.run(['rm','temp.txt'],capture_output=True)
 		else:
@@ -65,7 +65,10 @@ def binwalk(location):
 	output='**binwalk:** \n\n'
 	data=subprocess.run(['binwalk','--extract',"--dd='*'",location],text=True,capture_output=True)
 	out=data.stdout
-	output+=f'\n{out}'
+	out=re.findall('.*',out)
+	for i in out:
+		i=i.strip()
+		output+=f'{i}\n'
 	extdir=pwd+'/_'+filename(location)+'.extracted'
 	if(os.path.isdir(extdir)):
 		output+=f'\nEmbedded files extracted to: {extdir}/\n\n'
@@ -98,6 +101,7 @@ def exiftool(location):
 	out=data.stdout
 	out=re.findall('.*',out)
 	for i in out:
+		i=i.strip()
 		output+=f'{i}\n'
 	return output
 
