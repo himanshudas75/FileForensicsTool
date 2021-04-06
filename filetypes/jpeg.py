@@ -2,8 +2,6 @@ import modules
 import concurrent.futures
 
 def jpegfile(location):
-	begin='ffd8ff'
-	end='ffd9'
 	t=[]
 	output=[]
 
@@ -11,7 +9,7 @@ def jpegfile(location):
 		t.append(executor.submit(modules.exiftool,location))
 		t.append(executor.submit(modules.binwalk,location))
 		t.append(executor.submit(modules.xxd,location))
-		t.append(executor.submit(modules.strings,location,begin,end,'JPEG'))
+		t.append(executor.submit(modules.strings,location))
 		t.append(executor.submit(modules.stegextract,location))
 		t.append(executor.submit(modules.stegseek,location))
 		t.append(executor.submit(modules.outguess,location))

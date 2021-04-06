@@ -2,8 +2,6 @@ import modules
 import concurrent.futures
 
 def pngfile(location):
-	begin='89504e47'
-	end='49454e44ae426082'
 	t=[]
 	output=[]
 
@@ -12,7 +10,7 @@ def pngfile(location):
 		t.append(executor.submit(modules.exiftool,location))
 		t.append(executor.submit(modules.binwalk,location))
 		t.append(executor.submit(modules.xxd,location))
-		t.append(executor.submit(modules.strings,location,begin,end,'PNG'))
+		t.append(executor.submit(modules.strings,location))
 		t.append(executor.submit(modules.stegextract,location))
 		t.append(executor.submit(modules.zsteg,location))
 

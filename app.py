@@ -13,6 +13,7 @@ if __name__ == "__main__":
 	location=args.inploc
 
 	if os.path.isfile(location):
+		print('Analysing the given file...')
 		ftype=FileType.identify(location)
 		outloc=subprocess.run(['readlink','-f','REPORT.md'],text=True,capture_output=True)
 		outloc=outloc.stdout

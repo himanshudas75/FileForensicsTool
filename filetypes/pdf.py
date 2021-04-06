@@ -2,15 +2,13 @@ import modules
 import concurrent.futures
 
 def pdffile(location):
-	begin='25504446'
-	end='25454f'
 	t=[]
 	output=[]
 
 	with concurrent.futures.ThreadPoolExecutor() as executor:
 		t.append(executor.submit(modules.exiftool,location))
 		t.append(executor.submit(modules.xxd,location))
-		t.append(executor.submit(modules.strings,location,begin,end,'PDF'))
+		t.append(executor.submit(modules.strings,location))
 		t.append(executor.submit(modules.pdfid,location))
 		t.append(executor.submit(modules.pdf_parser,location))
 	

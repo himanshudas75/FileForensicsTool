@@ -17,10 +17,31 @@ def cat(location):
 	output+=f'\n{out}\n'
 	return output
 
-def strings(location,begin,end,ftype):
+def strings(location):
 	#PNG, JPEG, BMP, PDF
 	output='**strings:** \n\n'
-	data=subprocess.run(['xxd','-p',location],text=True,capture_output=True)
+	data=subprocess.run([f'strings {location} | grep "......*" > temp.txt'],shell=True,capture_output=True,text=True)
+	if(data.returncode==0):
+		out=data.stdout
+		if(os.path.isfile('temp.txt')):
+			f=open('temp.txt','r')
+			lines=f.readlines()
+			for l in lines:
+				l=l.strip()
+				l+='\n'
+				ans=re.findall('\w*',l)
+				if(not ans==[]):
+					c=l[len(ans[0])]
+					if(c==' '):
+						output+=l
+			f.close()
+			subprocess.run(['rm','temp.txt'],capture_output=True)
+		else:
+			output+='Some error occurred\n'
+	else:
+		output+=data.stderr+'\n'
+	return output
+	'''data=subprocess.run(['xxd','-p',location],text=True,capture_output=True)
 	out=data.stdout
 	if(ftype=='bitmap'):
 		output+=f'\n{out}\n'
@@ -37,7 +58,7 @@ def strings(location,begin,end,ftype):
 	if(len(last)):
 		last=last[-1][len(end):]
 		output+=f'\n{bytearray.fromhex(last).decode()}\n'
-	return output
+	return output'''
 
 def binwalk(location):
 	#PNG, JPEG
@@ -73,7 +94,7 @@ def xxd(location):
 def exiftool(location):
 	#PNG, JPEG, TXT, BMP
 	output='**exiftool:** \n\n'
-	data=subprocess.run([f'exiftool {location} | grep -v -E "Permissions|MIME|Subject|Title|Description|ExifTool Version Number"'],shell=True,text=True,capture_output=True)
+	data=subprocess.run([f'exiftool {location} | grep -v -E "Profile Version|Profile Class|Profile CMM Type|X Resolution|Y Resolution|Y Cb Cr Sub Sampling|Permissions|MIME|Subject|Title|Description|ExifTool Version Number"'],shell=True,text=True,capture_output=True)
 	out=data.stdout
 	output+=f'\n{out}\n'
 	return output
@@ -111,9 +132,9 @@ def outguess(location):
 	output='**outguess:**\n\n'
 	data=subprocess.run(['outguess','-r',location,pwd+'/outguess_extracted'],capture_output=True,text=True)
 	if(data.returncode==0):
-		output+=f'\n{data.stdout}\n'
+		output+=f'Outguess output stored in {pwd}/outguess_extracted\n'
 		return output
-	output+=f'\n{data.stderr}\n'
+	output+=f'{data.stderr}\n'
 	return output
 
 def pdfid(location):
