@@ -102,7 +102,7 @@ def xxd(location):
 	return output
 
 def exiftool(location):
-	#PNG, JPEG, TXT, BMP
+	#PNG, JPEG, TXT, BMP, EXT34
 	output='**exiftool:** \n\n'
 	data=subprocess.run([f'exiftool {location} | grep -v -E "Luminance|Viewing Cond Illuminant Type|Red Matrix Column|Green Matrix Column|Blue Matrix Column|Resolution Unit|Profile Connection Space|Profile Date Time|Profile File Signature|Red Tone Reproduction Curve|Green Tone Reproduction Curve|Blue Tone Reproduction Curve|Profile Version|Profile Class|Profile CMM Type|X Resolution|Y Resolution|Y Cb Cr Sub Sampling|Permissions|MIME|Subject|Title|Description|ExifTool Version Number"'],shell=True,text=True,capture_output=True)
 	out=data.stdout
@@ -211,7 +211,7 @@ def mraptor(location):
 
 def pyxswf(location):
 	#Office
-	output='**pyxswf:**\n';
+	output='**pyxswf:**\n'
 	data=subprocess.run([f'pyxswf -o {location} | grep -v -E "pyxswf|report any issue"'],shell=True,text=True,capture_output=True)
 	if(data.returncode==0):
 		output+=f'\n{data.stdout}\n'
@@ -222,3 +222,24 @@ def pyxswf(location):
 		output+=f'\n{data.stdout}\n'
 		return output
 	output+=f'\nNot an RTF file\n'
+	return output
+
+def extundelete(location):
+	#EXT34
+	output='**extundelete:**\n'
+	data=subprocess.run(['extundelete',location,'--restore-all'],capture_output=True,text=True)
+	if(data.returncode==0):
+		output+=f'The recovered deleted files have been extracted to {pwd}/RECOVERED_FILES\n'
+		return output
+	output+='No files recovered\n'
+	return output
+
+def foremost(location):
+	#EXT34
+	output='**foremost:**\n'
+	data=subprocess.run(['foremost','-t','all','-v','-i',location,'-o','./RECOVERED'],capture_output=True,text=True)
+	if(data.returncode==0 and os.path.isdir(f'{pwd}/RECOVERED')):
+		output+=f'The recovered files have been extracted to {pwd}/RECOVERED\n'
+		return output
+	output+='No files recovered\n'
+	return output

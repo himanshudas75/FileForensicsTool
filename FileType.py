@@ -56,6 +56,14 @@ def identify(location):
 		import filetypes.wav
 		ftwrite('WAV')
 		filetypes.wav.wavfile(location)
+
+	elif('ext4' in text or 'ext3' in text):
+		import filetypes.ext34
+		if('ext4' in text):
+			ftwrite('EXT4')
+		elif('ext3' in text):
+			ftwrite('EXT3')
+		filetypes.ext34.ext34file(location)
 		
 	else:
 		f=open('REPORT.md','a')
