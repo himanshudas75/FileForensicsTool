@@ -26,6 +26,3 @@ if __name__ == "__main__":
 finish=time.perf_counter()
 
 print(f'Finished in {round(finish-start,2)} second(s)' )
-
-#Without Threading, 5.68 seconds
-#With Threading, 4.8 seconds
