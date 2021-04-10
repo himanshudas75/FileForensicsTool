@@ -5,7 +5,7 @@ def fnwrite(location):
 	location+='/'
 	filename=re.findall(r'[^/]+',location)[-1]	
 	f=open('REPORT.md','w')
-	f.write('FileName: '+filename+'\n')
+	f.write('FileName: '+filename+'\n\n')
 
 def ftwrite(filetype):
 	f=open('REPORT.md','a')

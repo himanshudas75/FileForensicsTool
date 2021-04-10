@@ -48,48 +48,44 @@ def strings(location):
 	else:
 		output+=data.stderr+'\n'
 	return output
-	'''data=subprocess.run(['xxd','-p',location],text=True,capture_output=True)
-	out=data.stdout
-	if(ftype=='bitmap'):
-		output+=f'\n{out}\n'
-		return output
-	out=out.replace('\n','')
-	out=out.replace(end,'\n'+end)
-	last=re.findall('.+',out)
-	out=out.replace('\n','')
-	out=out.replace(begin,begin+'\n')
-	first=re.findall('.+',out)
-	if(len(first)):
-		first=first[0][:-len(begin)]
-		output+=f'\n{bytearray.fromhex(first).decode()}\n'
-	if(len(last)):
-		last=last[-1][len(end):]
-		output+=f'\n{bytearray.fromhex(last).decode()}\n'
-	return output'''
 
 def binwalk(location):
 	#PNG, JPEG
 	output='**binwalk:** \n\n'
 	data=subprocess.run(['binwalk','--extract',"--dd='*'",location],text=True,capture_output=True)
 	out=data.stdout
-	out=re.findall('.*',out)
-	for i in out:
-		i=i.strip()
-		output+=f'{i}\n'
+	out=re.findall('.+',out)
+	output+='| DECIMAL | HEXADECIMAL | DESCRIPTION |\n'
+	output+='| --- | --- | --- |\n'
+	for i in range(2,len(out)):
+		k=0
+		output+='| '
+		for j in range(len(out[i])):
+			if(out[i][j]==' ' and not out[i][j-1]==' ' and not k==2):
+				output+=' | '
+			if(not out[i][j]==' ' and out[i][j-1]==' ' and not k==2):
+				k+=1
+			if(not out[i][j]==' ' or k==2):
+				output+=out[i][j]
+			if(j==len(out[i])-1):
+				output+=' |\n'				
+	output+='\n'
+
 	extdir=pwd+'/_'+filename(location)+'.extracted'
 	if(os.path.isdir(extdir)):
+		print(True)
 		output+=f'\nEmbedded files extracted to: {extdir}/\n\n'
 	return output
 
 def zsteg(location):
 	#PNG
 	output='**zsteg:** \n\n'
-	data = subprocess.run(['zsteg','-a',location],text=True,capture_output=True)
+	data = subprocess.run(['zsteg',location],text=True,capture_output=True)
 	out=data.stdout
 	text = re.findall(r'text: ".*"',out)
 	for i in range(len(text)):
 		text[i]=text[i][7:-1]
-		output+=f'{text[i]}\n'
+		output+=f'{text[i]}\n\n'
 	return output
 
 def xxd(location):
@@ -109,7 +105,7 @@ def exiftool(location):
 	out=re.findall('.*',out)
 	for i in out:
 		i=i.strip()
-		output+=f'{i}<br>'
+		output+=f'{i}\n'
 	return output
 
 def stegextract(location):
