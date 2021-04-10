@@ -42,7 +42,6 @@ def strings(location):
 					if(c==' '):
 						output+=l+'\n'
 			f.close()
-			subprocess.run(['rm','temp.txt'],capture_output=True)
 		else:
 			output+='Some error occurred\n'
 	else:
