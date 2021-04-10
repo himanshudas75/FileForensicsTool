@@ -10,6 +10,7 @@ This tool automates the forensics analysis of a file. Various linux tools are us
 3. Make sure to note down the location of the file you wish to be analysed (say, /home/file.jpeg)
 4. Open the terminal and navigate to the directory of the tool.
 5. Run: <br\>
+	<!--Code Blocks-->
 	'''bash
 	python3 app.py <file_location>
 	''' <br\>OR<br\>
