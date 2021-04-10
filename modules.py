@@ -14,7 +14,10 @@ def cat(location):
 	output='**cat:**\n\n'
 	data=subprocess.run(['cat',location],text=True,capture_output=True)
 	out=data.stdout
-	output+=f'\n{out}\n'
+	out=re.findall('.*',out)
+	for i in out:
+		i=i.strip()
+		output+=f'{i}\n'
 	return output
 
 def strings(location):
@@ -88,7 +91,7 @@ def zsteg(location):
 	return output
 
 def xxd(location):
-	#PNG, JPEG, TXT, BMP
+	#PNG, JPEG, TXT, BMP, PDF, Office
 	output='**xxd:**\n\n'
 	subprocess.run(['xxd',location,'hexdump'])
 	extfile=pwd+'/hexdump'
@@ -97,7 +100,7 @@ def xxd(location):
 	return output
 
 def exiftool(location):
-	#PNG, JPEG, TXT, BMP, EXT34
+	#PNG, JPEG, TXT, BMP, EXT34, PDF, Office, WAV
 	output='**exiftool:** \n\n'
 	data=subprocess.run([f'exiftool {location} | grep -v -E "Luminance|Viewing Cond Illuminant Type|Red Matrix Column|Green Matrix Column|Blue Matrix Column|Resolution Unit|Profile Connection Space|Profile Date Time|Profile File Signature|Red Tone Reproduction Curve|Green Tone Reproduction Curve|Blue Tone Reproduction Curve|Profile Version|Profile Class|Profile CMM Type|X Resolution|Y Resolution|Y Cb Cr Sub Sampling|Permissions|MIME|Subject|Title|Description|ExifTool Version Number"'],shell=True,text=True,capture_output=True)
 	out=data.stdout
@@ -123,12 +126,17 @@ def pngcheck(location):
 	output='**pngcheck:**\n\n'
 	data=subprocess.run(['pngcheck',location],text=True,capture_output=True)
 	if(data.returncode==0):
-		output+=f'\n{data.stdout}\n'
+		out=data.stdout
+		out=re.findall('.*',out)
+		for i in out:
+			i=i.strip()
+			output+=f'{i}\n'
+		return output
 	output+=f'\n{data.stderr}\n'
 	return output
 
 def stegseek(location):
-	#JPEG
+	#JPEG, BMP
 	output='**stegseek:**\n\n'
 	data=subprocess.run(['stegseek',location,'/usr/share/wordlists/rockyou.txt'],text=True,capture_output=True,input='y')
 	outputpath=pwd+'/'+filename(location)+'.out'
@@ -153,23 +161,26 @@ def pdfid(location):
 	output='**pdfid:**\n\n'
 	data=subprocess.run(['pdfid',location],text=True,capture_output=True)
 	out=data.stdout
-	output+=f'\n{out}\n'
+	out=re.findall('.*',out)
+	for i in out:
+		i=i.strip()
+		output+=f'{i}\n'
 	return output
 
 def pdf_parser(location):
 	#PDF
 	output='**pdf-parser:**\n\n'
-	data=subprocess.run(['pdf-parser',location],text=True,capture_output=True)
+	data=subprocess.run([f'pdf-parser {location} | grep -v -E "Should you encounter problems|This program has not been tested"'],shell=True,text=True,capture_output=True)
 	out=data.stdout
 	output+=f'\n{out}\n'
 	return output
 
 def unzip(location):
-	#Office files, ZIP
+	#Office, ZIP
 	output='**unzip:**\n\n'
 	data=subprocess.run(['unzip','-o',location,'-d',pwd+'/ArchiveExtract'],capture_output=True,text=True)
 	if(data.returncode==0):
-		output+=f'\n{data.stdout}\n'
+		output+=f'Extracted to {pwd}/ArchiveExtract\n'
 		return output
 	output+=f'\n{data.stderr}\n'
 	return output
@@ -179,7 +190,11 @@ def olevba(location):
 	output='**olevba:**\n\n'
 	data=subprocess.run([f'olevba -c {location} | grep -v -E "olevba|===="'],shell=True,text=True,capture_output=True)
 	if(data.returncode==0):
-		output+=f'\n{data.stdout}\n'
+		out=data.stdout
+		out=re.findall('.*',out)
+		for i in out:
+			i=i.strip()
+			output+=f'{i}\n'
 		return output
 	output+=f'\n{data.stderr}\n'
 	return output
@@ -199,7 +214,12 @@ def mraptor(location):
 	output='**mraptor:**\n'
 	data=subprocess.run([f'mraptor {location} | grep -v -E "MacroRaptor|issues at|Flags: A=|Exit code"'],shell=True,text=True,capture_output=True)
 	if(data.returncode==0):
-		output+=f'\n{data.stdout}\n'
+		out=data.stdout
+		out=re.findall('.+',out)
+		output+='| Result | Flags | Type | File |\n'
+		output+='| --- | --- | --- | --- |\n'
+		for i in range(3,len(out)):
+			output+=f'| {out[i].strip()} |\n'
 		return output
 	output+=f'\n{data.stderr}\n'
 	return output
@@ -207,12 +227,16 @@ def mraptor(location):
 def pyxswf(location):
 	#Office
 	output='**pyxswf:**\n'
-	data=subprocess.run([f'pyxswf -o {location} | grep -v -E "pyxswf|report any issue"'],shell=True,text=True,capture_output=True)
+	data=subprocess.run([f'pyxswf -o {location}'],shell=True,text=True,capture_output=True)
 	if(data.returncode==0):
-		output+=f'\n{data.stdout}\n'
+		out=data.stdout
+		out=re.findall('.*',out)
+		for i in out:
+			i=i.strip()
+			output+=f'{i}\n'
 		return output
-	output+=f'\nNot an OLE2 structured storage file'
-	data=subprocess.run([f'pyxswf -f {location} | grep -v -E "pyxswf|report any issue"'],text=True,capture_output=True)
+	output+=f'\nNot an OLE2 structured storage file\n'
+	data=subprocess.run([f'pyxswf -f {location} | grep -v -E "pyxswf | report any issue"'],text=True,capture_output=True,shell=True)
 	if(data.returncode==0):
 		output+=f'\n{data.stdout}\n'
 		return output

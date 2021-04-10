@@ -37,6 +37,7 @@ This tool automates the forensics analysis of a file. Various linux tools are us
 18. sox
 19. mraptor
 20. pyxswf
+21. john the ripper (zip2john is used)
 
 **Python Libraries Used:**
 1. re
