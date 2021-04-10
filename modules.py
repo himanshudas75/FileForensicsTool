@@ -14,10 +14,10 @@ def cat(location):
 	output='**cat:**\n\n'
 	data=subprocess.run(['cat',location],text=True,capture_output=True)
 	out=data.stdout
-	out=re.findall('.*',out)
+	out=re.findall('.+',out)
 	for i in out:
 		i=i.strip()
-		output+=f'{i}\n'
+		output+=f'{i}\n\n'
 	return output
 
 def strings(location):
@@ -104,10 +104,10 @@ def exiftool(location):
 	output='**exiftool:** \n\n'
 	data=subprocess.run([f'exiftool {location} | grep -v -E "Luminance|Viewing Cond Illuminant Type|Red Matrix Column|Green Matrix Column|Blue Matrix Column|Resolution Unit|Profile Connection Space|Profile Date Time|Profile File Signature|Red Tone Reproduction Curve|Green Tone Reproduction Curve|Blue Tone Reproduction Curve|Profile Version|Profile Class|Profile CMM Type|X Resolution|Y Resolution|Y Cb Cr Sub Sampling|Permissions|MIME|Subject|Title|Description|ExifTool Version Number"'],shell=True,text=True,capture_output=True)
 	out=data.stdout
-	out=re.findall('.*',out)
+	out=re.findall('.+',out)
 	for i in out:
 		i=i.strip()
-		output+=f'{i}\n'
+		output+=f'{i}\n\n'
 	return output
 
 def stegextract(location):
@@ -115,10 +115,10 @@ def stegextract(location):
 	output='**stegextract:**\n\n'
 	data=subprocess.run(['stegextract',location],text=True,capture_output=True)
 	out=data.stdout
-	out=re.findall('.*',out)
+	out=re.findall('.+',out)
 	for i in out:
 		i=i.strip()
-		output+=f'{i}\n'
+		output+=f'{i}\n\n'
 	return output
 
 def pngcheck(location):
@@ -127,12 +127,12 @@ def pngcheck(location):
 	data=subprocess.run(['pngcheck',location],text=True,capture_output=True)
 	if(data.returncode==0):
 		out=data.stdout
-		out=re.findall('.*',out)
-		for i in out:
-			i=i.strip()
-			output+=f'{i}\n'
-		return output
-	output+=f'\n{data.stderr}\n'
+	else:
+		out=data.stderr
+	out=re.findall('.+',out)
+	for i in out:
+		i=i.strip()
+		output+=f'{i}\n\n'
 	return output
 
 def stegseek(location):
@@ -153,7 +153,11 @@ def outguess(location):
 	if(data.returncode==0):
 		output+=f'Outguess output stored in {pwd}/outguess_extracted\n'
 		return output
-	output+=f'{data.stderr}\n'
+	out=data.stderr
+	out=re.findall('.+',out)
+	for i in out:
+		i=i.strip()
+		output+=f'{i}\n\n'
 	return output
 
 def pdfid(location):
@@ -161,10 +165,10 @@ def pdfid(location):
 	output='**pdfid:**\n\n'
 	data=subprocess.run(['pdfid',location],text=True,capture_output=True)
 	out=data.stdout
-	out=re.findall('.*',out)
+	out=re.findall('.+',out)
 	for i in out:
 		i=i.strip()
-		output+=f'{i}\n'
+		output+=f'{i}\n\n'
 	return output
 
 def pdf_parser(location):
@@ -182,7 +186,11 @@ def unzip(location):
 	if(data.returncode==0):
 		output+=f'Extracted to {pwd}/ArchiveExtract\n'
 		return output
-	output+=f'\n{data.stderr}\n'
+	out=data.stderr
+	out=re.findall('.+',out)
+	for i in out:
+		i=i.strip()
+		output+=f'{i}\n\n'
 	return output
 
 def olevba(location):
@@ -191,12 +199,12 @@ def olevba(location):
 	data=subprocess.run([f'olevba -c {location} | grep -v -E "olevba|===="'],shell=True,text=True,capture_output=True)
 	if(data.returncode==0):
 		out=data.stdout
-		out=re.findall('.*',out)
-		for i in out:
-			i=i.strip()
-			output+=f'{i}\n'
-		return output
-	output+=f'\n{data.stderr}\n'
+	else:
+		out=data.stderr
+	out=re.findall('.+',out)
+	for i in out:
+		i=i.strip()
+		output+=f'{i}\n\n'
 	return output
 
 def sox(location):
@@ -206,7 +214,11 @@ def sox(location):
 	if(data.returncode==0):
 		output+=f'\nSpectrogram of the audio file has been stored in {pwd}/spectrogram.png\n'
 		return output
-	output=f'\n{data.stderr}\n'
+	out=data.stderr
+	out=re.findall('.+',out)
+	for i in out:
+		i=i.strip()
+		output+=f'{i}\n\n'
 	return output
 
 def mraptor(location):
@@ -221,7 +233,11 @@ def mraptor(location):
 		for i in range(3,len(out)):
 			output+=f'| {out[i].strip()} |\n'
 		return output
-	output+=f'\n{data.stderr}\n'
+	out=data.stderr
+	out=re.findall('.+',out)
+	for i in out:
+		i=i.strip()
+		output+=f'{i}\n\n'
 	return output
 
 def pyxswf(location):
@@ -230,15 +246,19 @@ def pyxswf(location):
 	data=subprocess.run([f'pyxswf -o {location}'],shell=True,text=True,capture_output=True)
 	if(data.returncode==0):
 		out=data.stdout
-		out=re.findall('.*',out)
+		out=re.findall('.+',out)
 		for i in out:
 			i=i.strip()
-			output+=f'{i}\n'
+			output+=f'{i}\n\n'
 		return output
 	output+=f'\nNot an OLE2 structured storage file\n'
 	data=subprocess.run([f'pyxswf -f {location} | grep -v -E "pyxswf | report any issue"'],text=True,capture_output=True,shell=True)
 	if(data.returncode==0):
-		output+=f'\n{data.stdout}\n'
+		out=data.stdout
+		out=re.findall('.+',out)
+		for i in out:
+			i=i.strip()
+			output+=f'{i}\n\n'
 		return output
 	output+=f'\nNot an RTF file\n'
 	return output
@@ -261,4 +281,18 @@ def foremost(location):
 		output+=f'The recovered files have been extracted to {pwd}/RECOVERED\n'
 		return output
 	output+='No files recovered\n'
+	return output
+
+def stegsnow(location):
+	#TXT
+	output='**stegsnow:**\n\n'
+	data=subprocess.run(['stegsnow','-C',location],capture_output=True,text=True)
+	if(data.returncode==0):
+		out=data.stdout
+	else:
+		out=data.stderr
+	out=re.findall('.+',out)
+	for i in out:
+		i=i.strip()
+		output+=f'{i}\n\n'
 	return output

@@ -9,6 +9,7 @@ def txtfile(location):
 		t.append(executor.submit(modules.exiftool,location))
 		t.append(executor.submit(modules.cat,location))
 		t.append(executor.submit(modules.xxd,location))
+		t.append(executor.submit(modules.stegsnow,location))
 
 	for thread in t:
 		output.append(thread.result())

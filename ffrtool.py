@@ -17,10 +17,10 @@ if __name__ == "__main__":
 		ftype=FileType.identify(location)
 		outloc=subprocess.run(['readlink','-f','REPORT.md'],text=True,capture_output=True)
 		outloc=outloc.stdout
-		print('REPORT.md created at: '+outloc)
+		print('\nREPORT.md created at: '+outloc)
 
 	else:
-		print('WARNING! File Does Not Exist!')
+		print('\nWARNING! File Does Not Exist!')
 	subprocess.run(['rm','-rf','__pycache__','./filetypes/__pycache__','temp.txt'])
 
 finish=time.perf_counter()
