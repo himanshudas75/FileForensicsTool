@@ -109,7 +109,7 @@ def exiftool(location):
 	out=re.findall('.*',out)
 	for i in out:
 		i=i.strip()
-		output+=f'{i}<br \>'
+		output+=f'{i}<br>'
 	return output
 
 def stegextract(location):
