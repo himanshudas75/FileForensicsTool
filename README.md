@@ -50,4 +50,4 @@ JPEG, PNG, BMP, TXT, EXT3, EXT4, ZIP, PDF, WAV, Office files (.docx, .xlsx)
 6. concurrent.futures
 
 **Sample:** \
-A sample REPORT.md file has been provided as sample_REPORT.md
+A sample REPORT.md file has been provided as sample_REPORT.md.
